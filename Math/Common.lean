@@ -1,4 +1,4 @@
-class AddCommGroup (α : Type) where
+class SimpleAddCommGroup (α : Type) where
   add : α → α → α
   zero : α
   neg : α → α
@@ -8,14 +8,18 @@ class AddCommGroup (α : Type) where
   add_left_neg : ∀ a : α, add (neg a) a = zero
   add_comm : ∀ a b : α, add a b = add b a
 
-class Monoid (α : Type) where
+class SimpleMonoid (α : Type) where
   mul : α → α → α
   one : α
   mul_assoc : ∀ a b c : α, mul (mul a b) c = mul a (mul b c)
   one_mul : ∀ a : α, mul one a = a
   mul_one : ∀ a : α, mul a one = a
 
-class Ring (α : Type) extends AddCommGroup α, Monoid α where
+class SimpleGroup (α : Type) extends SimpleMonoid α where
+  inv : α → α
+  mul_left_inv : ∀ a : α, mul (inv a) a = one
+
+class SimpleRing (α : Type) extends SimpleAddCommGroup α, SimpleMonoid α where
   mul_comm : ∀ a b : α, mul a b = mul b a
   left_distrib : ∀ a b c : α, mul a (add b c) = add (mul a b) (mul a c)
   right_distrib : ∀ a b c : α, mul (add a b) c = add (mul a c) (mul b c)
